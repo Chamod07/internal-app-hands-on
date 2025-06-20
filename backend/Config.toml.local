@@ -1,0 +1,10 @@
+[backend.database.databaseConfig]
+host = ""
+user = ""
+password = ""
+database = "employee_schema"
+port = 3306
+
+[backend.database.databaseConfig.connectionPool]
+maxOpenConnections = 15
+minIdleConnections = 5
