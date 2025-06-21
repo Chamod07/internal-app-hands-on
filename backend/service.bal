@@ -3,6 +3,15 @@ import backend.database;
 import ballerina/http;
 
 # RESTful service for managing employees
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: false,
+        allowHeaders: ["Content-Type", "Authorization"],
+        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        maxAge: 84900
+    }
+}
 service /api/v1 on new http:Listener(9090) {
 
     # Creates a new employee
