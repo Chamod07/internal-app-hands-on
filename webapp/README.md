@@ -12,6 +12,6 @@ This web application provides a user interface for managing employees through th
    ```bash
    cd webapp
    npm install
-   npm start
+   npm run dev
    ```
-3. Access the application at `http://localhost:3000`
+3. Access the application at `http://localhost:5173`
