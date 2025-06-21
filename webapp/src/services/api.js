@@ -24,15 +24,20 @@ const api = {
       throw error;
     }
   },
-
+  
   // Search employees
   searchEmployees: async (searchTerm, jobRole) => {
     try {
       let url = `${API_URL}/employees`;
       const params = new URLSearchParams();
       
-      if (searchTerm) params.append('searchTerm', searchTerm);
-      if (jobRole) params.append('jobRole', jobRole);
+      if (searchTerm && searchTerm.trim()) {
+        params.append('searchTerm', searchTerm.trim());
+      }
+      
+      if (jobRole) {
+        params.append('jobRole', jobRole);
+      }
       
       if (params.toString()) {
         url += `?${params.toString()}`;

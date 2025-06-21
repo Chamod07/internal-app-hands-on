@@ -1,28 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
-const EmployeeList = ({ onEdit, onView, onDeleteSuccess }) => {
-  const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
+const EmployeeList = ({ employees, onEdit, onView, onDeleteSuccess }) => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
-  const fetchEmployees = async () => {
-    try {
-      setLoading(true);
-      const data = await api.getAllEmployees();
-      setEmployees(data);
-      setError(null);
-    } catch (err) {
-      setError('Failed to fetch employees. Please try again later.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id, e) => {
     if (e) e.preventDefault();
@@ -30,7 +11,6 @@ const EmployeeList = ({ onEdit, onView, onDeleteSuccess }) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       try {
         await api.deleteEmployee(id);
-        setEmployees(employees.filter(emp => emp.employeeId !== id));
         if (onDeleteSuccess) onDeleteSuccess(id);
       } catch (err) {
         console.error('Delete failed:', err);
