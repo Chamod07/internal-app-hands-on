@@ -21,7 +21,14 @@ public type Employee record {|
 # + employee - The employee record to insert
 # + return - True if successful, or an error
 public function insertEmployee(Employee employee) returns boolean|error {
-    sql:ExecutionResult result = check dbClient->execute(buildInsertEmployeeQuery(employee));
+    sql:ExecutionResult|error result = dbClient->execute(buildInsertEmployeeQuery(employee));
+
+    if result is error {
+        if result.message().indexOf("Duplicate entry") != -1 {
+            return error("Employee ID or email already exists");
+        }
+        return error("Database error: " + result.message());
+    }
 
     if result.affectedRowCount > 0 {
         return true;
