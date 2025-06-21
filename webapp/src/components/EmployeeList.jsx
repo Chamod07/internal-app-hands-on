@@ -25,15 +25,12 @@ const EmployeeList = ({ onEdit, onView, onDeleteSuccess }) => {
   };
 
   const handleDelete = async (id, e) => {
-    // Prevent default to avoid any form submission or page refresh
     if (e) e.preventDefault();
     
     if (window.confirm('Are you sure you want to delete this employee?')) {
       try {
         await api.deleteEmployee(id);
-        // Remove the deleted employee from the local state
         setEmployees(employees.filter(emp => emp.employeeId !== id));
-        // Notify parent component if callback provided
         if (onDeleteSuccess) onDeleteSuccess(id);
       } catch (err) {
         console.error('Delete failed:', err);

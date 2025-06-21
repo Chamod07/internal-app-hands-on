@@ -13,6 +13,7 @@ const api = {
       throw error;
     }
   },
+
   // Get a single employee by ID
   getEmployee: async (id) => {
     try {
@@ -25,19 +26,27 @@ const api = {
   },
 
   // Search employees
-  searchEmployees: async (searchTerm, jobRole = '') => {
+  searchEmployees: async (searchTerm, jobRole) => {
     try {
+      let url = `${API_URL}/employees`;
       const params = new URLSearchParams();
+      
       if (searchTerm) params.append('searchTerm', searchTerm);
       if (jobRole) params.append('jobRole', jobRole);
       
-      const response = await axios.get(`${API_URL}/employees?${params.toString()}`);
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
+      const response = await axios.get(url);
       return response.data;
     } catch (error) {
       console.error('Error searching employees:', error);
       throw error;
     }
-  },  // Create a new employee
+  },
+
+  // Create a new employee
   createEmployee: async (employeeData) => {
     try {
       const response = await axios.post(`${API_URL}/employees`, employeeData);

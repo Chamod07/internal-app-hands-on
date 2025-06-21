@@ -12,7 +12,6 @@ function App() {
   const [employees, setEmployees] = useState([])
   const [searchResults, setSearchResults] = useState(null)
 
-  // Fetch employees on initial load
   useEffect(() => {
     fetchAllEmployees();
   }, []);
@@ -24,16 +23,14 @@ function App() {
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
-  };
-
-  const handleSearch = async (query) => {
-    if (!query.trim()) {
+  };  const handleSearch = async (searchTerm, jobRole) => {
+    if (!searchTerm && !jobRole) {
       setSearchResults(null);
       return;
     }
 
     try {
-      const results = await api.searchEmployees(query);
+      const results = await api.searchEmployees(searchTerm, jobRole);
       setSearchResults(results);
     } catch (error) {
       console.error('Search error:', error);
@@ -42,25 +39,19 @@ function App() {
   };
 
   const handleSaveEmployee = (savedEmployee) => {
-    // After saving, return to the list view
     setView('list');
-    // Reset search results to show all employees including the new/updated one
     setSearchResults(null);
-    // Refresh the employee list
     fetchAllEmployees();
   };
 
   const handleDeleteSuccess = (deletedId) => {
-    // If we're viewing a deleted employee, go back to the list
     if (selectedEmployeeId === deletedId) {
       setView('list');
       setSelectedEmployeeId(null);
     }
     
-    // Update our local employee list
     setEmployees(prev => prev.filter(emp => emp.employeeId !== deletedId));
     
-    // Clear any search results since they might include the deleted employee
     if (searchResults) {
       setSearchResults(prev => prev.filter(emp => emp.employeeId !== deletedId));
     }

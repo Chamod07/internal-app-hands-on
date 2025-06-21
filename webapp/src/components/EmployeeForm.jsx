@@ -15,7 +15,6 @@ const EmployeeForm = ({ employeeId, onSave, onCancel }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // If employeeId is provided, fetch the employee data for editing
     if (employeeId) {
       fetchEmployeeData();
     }
@@ -50,10 +49,8 @@ const EmployeeForm = ({ employeeId, onSave, onCancel }) => {
       let result;
       
       if (employeeId) {
-        // Update existing employee
         result = await api.updateEmployee(employeeId, formData);
       } else {
-        // Create new employee
         result = await api.createEmployee(formData);
       }
       
@@ -81,7 +78,7 @@ const EmployeeForm = ({ employeeId, onSave, onCancel }) => {
             name="employeeId"
             value={formData.employeeId || ''}
             onChange={handleChange}
-            disabled={!!employeeId} // Disable if editing existing employee
+            disabled={!!employeeId}
             required
           />
         </div>
