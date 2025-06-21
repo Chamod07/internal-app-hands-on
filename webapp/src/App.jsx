@@ -6,22 +6,21 @@ import EmployeeDetails from './components/EmployeeDetails'
 import SearchBar from './components/SearchBar'
 import api from './services/api'
 
-function App() {
-  const [view, setView] = useState('list') // list, add, edit, view
+function App() {  const [view, setView] = useState('list') // list, add, edit, view
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null)
   const [employees, setEmployees] = useState([])
   const [searchResults, setSearchResults] = useState(null)
   
+  const fetchEmployees = async () => {
+    try {
+      const data = await api.getAllEmployees();
+      setEmployees(data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const data = await api.getAllEmployees();
-        setEmployees(data);
-      } catch (error) {
-        console.error('Error fetching employees:', error);
-      }
-    };
-    
     fetchEmployees();
   }, []);
 
@@ -39,9 +38,12 @@ function App() {
       alert('Failed to search employees. Please try again.');
     }
   };
-
   const handleSaveEmployee = (savedEmployee) => {
+    // After saving, fetch the updated list of employees
+    fetchEmployees();
+    // Return to the list view
     setView('list');
+    // Reset search results to show all employees including the new/updated one
     setSearchResults(null);
   };
 
@@ -49,8 +51,10 @@ function App() {
     setView('list');
     setSelectedEmployeeId(null);
   };
-
   const handleDeleteSuccess = (deletedId) => {
+    // Refresh the employee list after deletion
+    fetchEmployees();
+    
     if (view === 'view' && selectedEmployeeId === deletedId) {
       setView('list');
       setSelectedEmployeeId(null);

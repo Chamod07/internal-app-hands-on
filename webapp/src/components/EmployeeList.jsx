@@ -4,7 +4,6 @@ import api from '../services/api';
 const EmployeeList = ({ employees, onEdit, onView, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const handleDelete = async (id, e) => {
     if (e) e.preventDefault();
     
